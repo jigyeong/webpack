@@ -9,7 +9,21 @@
 </head>
 <body>
     <div id="app">
-        <button>채팅 참가</button>
+        <div class="box" id="chatDoor">
+            <button id="btnJoinRoom">채팅 참가</button>
+        </div>
+        <div class="box" id="chatList">
+        </div>
+        <div class="box" id="chatRoom">
+            <div id="header">
+                <p>대화상대</p>
+                <button>참가자</button>
+            </div>
+            <div id="bottom">
+                <input type="text" placeholder="내용을 입력해주세요"/>
+                <button>전송</button>
+            </div>
+        </div>
     </div>
     
     <script src="main.js"></script>
