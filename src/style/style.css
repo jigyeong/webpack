@@ -1,13 +1,21 @@
 #app {
     display: flex;
+    flex-flow: row wrap;
 }
 
-.box {
-    height: 100vh;
-    flex: 1;
-    background-color: lightgoldenrodyellow;
-}
-
-#chatDoor {
+.chatDoor {
+    height: 400px;
+    width: 300px;
+    position: relative;
     text-align: center;
+    padding-top:40%;
+}
+
+.chatRoom {
+    height: 400px;
+    width: 300px;
+    position: relative;
+    padding:10px;
+    border:1px dotted gray;
+    margin : 10px;
 }
