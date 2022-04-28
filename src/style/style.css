@@ -19,6 +19,30 @@
     border:1px dotted gray;
     margin : 10px;
 }
+.chatRoom .messageBox {
+    height: 310px; 
+    overflow-y: scroll;
+}
+.chatRoom .bottomBox {
+    bottom: 10px; 
+    position: absolute; 
+    width:100%; 
+    text-align:center;
+}
+.chatRoom .btnUsers {
+    right: 10px; 
+    position:absolute; 
+    height: 40px;
+}
+.chatRoom .divUsers {
+    float:right; 
+    background-color: bisque; 
+    right:0;position:absolute;
+    top:40px; 
+    height:300px; 
+    width:100px;
+    display: block; /*none or block*/
+}
 
 .audience {
     border-radius: 0px 20px 20px 50px; 
