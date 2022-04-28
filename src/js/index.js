@@ -36,7 +36,7 @@ const openNewRoom = function(user){
     const messageObj = {
         user : user,
         message : 'enter',
-        time : new Date().getTime()
+        time : new Date().getDate()
     }
     sendMessage(messageObj);
 }
@@ -60,27 +60,28 @@ const drawingNewRoom = function(user){
                 <button style="right: 10px; position:absolute; height: 40px;">참가자</button>
             </div>
             <div id="messages_${user}">
-                <div style="border-radius: 0px 20px 20px 50px; background-color:lightgray; left:0; width: 50%; margin-bottom: 10px;">
-                    dd
-                </div>
-                <div style="border-radius: 20px 0px 50px 20px; background-color:pink; right: 0px; width: 50%; margin-bottom: 10px;">
-                    나의말
-                </div>
             </div>
             <div id="bottom_${user}" style="bottom: 10px; position: absolute; width:100%; text-align:center;">
                 <input id="inputbox" type="text" placeholder="내용을 입력해주세요" style="width:60%"/>
-                
             </div>
         </div>
-    
     `
+
+    // send button + onclickListner  별도 추가
     rootNode.insertAdjacentHTML('beforeend',roomNode);
     let btnNode = document.createElement('button');
     let btnTextNode = document.createTextNode('전송');
     btnNode.appendChild(btnTextNode);
     btnNode.addEventListener('click', clickSendBtn);
-    document.getElementById('bottom_'+user).appendChild(btnNode)
-    
+
+    let bottomNode = document.getElementById('bottom_'+user);
+    bottomNode.appendChild(btnNode);
+    bottomNode.children.inputbox.addEventListener('keyup', function(event) {
+        event.preventDefault();
+        if (event.keyCode === 13) {
+            btnNode.click();
+        }
+    });
 }
 
 function clickSendBtn(e){
@@ -94,6 +95,7 @@ function clickSendBtn(e){
         time : new Date().getTime()
     }
     sendMessage(messageObj);
+    sendMessageNode.value='';
 }
 
 const drawMessage = function(chatRoomOwner, messageObj){
@@ -102,13 +104,13 @@ const drawMessage = function(chatRoomOwner, messageObj){
     let messageDiv;
 
     if(messageObj.message=='enter') {
-        messageDiv=`<div>${messageObj.user} 님이 입장하셨습니다.</div>`
+        messageDiv=`<div class="enter">${messageObj.user} 님이 입장하셨습니다.</div>`
     }
     else if(chatRoomOwner!==messageObj.user){
-        messageDiv=``;
+        messageDiv=`<div style="float: left;width:50%;">${messageObj.user}</div><br/><div class="audience">${messageObj.message}</div>`;
     }
     else {
-        messageDiv=``;
+        messageDiv=`<div class="me">${messageObj.message}</div>`;
     }
     chatRoomNode.insertAdjacentHTML('beforeend',messageDiv);
 }

@@ -19,3 +19,27 @@
     border:1px dotted gray;
     margin : 10px;
 }
+
+.audience {
+    border-radius: 0px 20px 20px 50px; 
+    background-color:lightgray; 
+    width: 50%; 
+    margin-bottom: 10px; 
+    padding: 15px; 
+    float: left;
+}
+
+.me {
+    border-radius: 20px 0px 50px 20px; 
+    background-color:pink; 
+    width: 50%; 
+    margin-bottom: 10px; 
+    padding: 15px; 
+    float:right
+}
+
+.enter {
+    width: 100%;
+    padding: 15px; 
+    float: left;
+}
