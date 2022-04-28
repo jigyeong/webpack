@@ -47,7 +47,7 @@ const sendMessage = function(messageObj){
         // 각 채팅방마다 push new message
         chatRoom.messages.push(messageObj);
         // 각 채팅방마다 drawing new message
-        drawingMessage(chatRoom.owner, messageObj);
+        drawMessage(chatRoom.owner, messageObj);
     })
 }
 
@@ -67,21 +67,49 @@ const drawingNewRoom = function(user){
                     나의말
                 </div>
             </div>
-            <div id="bottom" style="bottom: 10px; position: absolute; width:100%; text-align:center;">
-                <input type="text" placeholder="내용을 입력해주세요" style="width:60%"/>
-                <button>전송</button>
+            <div id="bottom_${user}" style="bottom: 10px; position: absolute; width:100%; text-align:center;">
+                <input id="inputbox" type="text" placeholder="내용을 입력해주세요" style="width:60%"/>
+                
             </div>
         </div>
     
     `
     rootNode.insertAdjacentHTML('beforeend',roomNode);
+    let btnNode = document.createElement('button');
+    let btnTextNode = document.createTextNode('전송');
+    btnNode.appendChild(btnTextNode);
+    btnNode.addEventListener('click', clickSendBtn);
+    document.getElementById('bottom_'+user).appendChild(btnNode)
+    
 }
 
-const drawingMessage = function(chatRoomOwner, messageObj){
+function clickSendBtn(e){
+    let sendUserId = e.target.parentNode.id.split('_')[1];
+    let sendMessageNode = e.target.parentElement.children.inputbox;
+    let message = sendMessageNode.value;
+
+    const messageObj = {
+        user : sendUserId,
+        message : message,
+        time : new Date().getTime()
+    }
+    sendMessage(messageObj);
+}
+
+const drawMessage = function(chatRoomOwner, messageObj){
     let chatRoomMessagesId = `messages_${chatRoomOwner}`;
     let chatRoomNode = document.getElementById(chatRoomMessagesId);
     let messageDiv;
-    if(messageObj.message=='enter') messageDiv=`<div>${messageObj.user} 님이 입장하셨습니다.</div>`
+
+    if(messageObj.message=='enter') {
+        messageDiv=`<div>${messageObj.user} 님이 입장하셨습니다.</div>`
+    }
+    else if(chatRoomOwner!==messageObj.user){
+        messageDiv=``;
+    }
+    else {
+        messageDiv=``;
+    }
     chatRoomNode.insertAdjacentHTML('beforeend',messageDiv);
 }
 
