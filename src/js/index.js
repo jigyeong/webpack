@@ -2,22 +2,43 @@
 
 import '../style/style.css'
 
+const btnJoinRoom = document.getElementById("btnJoinRoom");
+const inputNode = document.getElementById('inputUserName');
+const btnEnter = document.getElementById("btnEnter");
+
 window.addEventListener('DOMContentLoaded',()=>{
     /*
      추후 localStorage 에서 data 뽑아옴
      */
     
+    btnJoinRoom.addEventListener('click', function(){
+        document.querySelector('.modal').style.display='block';
+        inputNode.focus();
+    });
+    
+    btnEnter.addEventListener('click',joinRoom);
+    
+    inputNode.addEventListener('keydown', function(event) {
+        if (event.keyCode === 13) {
+            joinRoom();
+        }
+    });
 });
-const btnJoinRoom = document.getElementById("btnJoinRoom");
-btnJoinRoom.addEventListener('click', joinRoom);
+
 
 const users = [];
 const chatRooms = [];
 
 function joinRoom(){
-    let defaultMessage = '닉네임을 입력해주세요.';
-    let user = prompt('닉네임 설정', defaultMessage);
-    if(user===defaultMessage || !user) return;
+
+    let user = inputNode.value;
+    if(users.includes(user)){
+        alert('이미 존재하는 닉네임 입니다.')
+        return;
+    }
+
+    document.querySelector('.modal').style.display='none';
+    inputNode.value='';
 
     users.push(user);
     openNewRoom(user);
@@ -29,10 +50,10 @@ const openNewRoom = function(user){
     chatRooms.push(chatRoom);
 
     drawNewRoom(user);
-    noticeNewUsers(user);
+    noticeNewUser(user);
 }
 
-const noticeNewUsers = function(user){
+const noticeNewUser = function(user){
     const messageObj = {
         user : user,
         message : 'enter',
