@@ -8,7 +8,8 @@
     width: 300px;
     position: relative;
     text-align: center;
-    padding-top:40%;
+    margin: 10px;
+    padding: 10px;
 }
 
 .chatRoom {
@@ -38,10 +39,11 @@
     float:right; 
     background-color: bisque; 
     right:0;position:absolute;
-    top:40px; 
+    top:60px; 
     height:300px; 
-    width:100px;
-    display: block; /*none or block*/
+    width:150px;
+    padding:10px;
+    display: none; /*none or block*/
 }
 
 .audience {
@@ -63,7 +65,8 @@
 }
 
 .enter {
-    width: 100%;
+    width: 80%;
     padding: 15px; 
     float: left;
+    text-align: center;
 }

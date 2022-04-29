@@ -15,7 +15,10 @@ const users = [];
 const chatRooms = [];
 
 function joinRoom(){
-    let user = prompt('닉네임 설정');
+    let defaultMessage = '닉네임을 입력해주세요.';
+    let user = prompt('닉네임 설정', defaultMessage);
+    if(user===defaultMessage || !user) return;
+
     users.push(user);
     openNewRoom(user);
 }
@@ -26,13 +29,21 @@ const openNewRoom = function(user){
     chatRooms.push(chatRoom);
 
     drawNewRoom(user);
+    noticeNewUsers(user);
+}
 
+const noticeNewUsers = function(user){
     const messageObj = {
         user : user,
         message : 'enter',
         time : new Date().getDate()
     }
     sendMessage(messageObj);
+
+    // update Users Div
+    users.forEach(i => {
+        if(i!==user) document.getElementById(`divUsers_${i}`).innerHTML += `${user}</br>`
+    });
 }
 
 const sendMessage = function(messageObj){
@@ -48,10 +59,10 @@ const sendMessage = function(messageObj){
 const drawNewRoom = function(user){
     const rootNode = document.getElementById('app');
     const roomNode = `
-    <div class="chatRoom" id="chatRoom_${user}">
-            <div id="header_${user}" style="display: flex; text-align: center;">
-                <p>${user}</p>
-                <div class="divUsers" id="divUsers_${user}"></div>
+        <div class="chatRoom" id="chatRoom_${user}">
+            <div id="header_${user}" style="display: flex;">
+                <p style="padding-left:20px">${user}</p>
+               
             </div>
             <div id="messages_${user}" class="messageBox">
             </div>
@@ -62,26 +73,36 @@ const drawNewRoom = function(user){
         `
     rootNode.insertAdjacentHTML('beforeend',roomNode);
    
+    const headerNode = document.getElementById('header_'+user);
+    
+    // Users Div
+    let divUsersNode = document.createElement('div');
+    divUsersNode.className = 'divUsers';
+    divUsersNode.id = `divUsers_${user}`;
+    divUsersNode.innerHTML = `<p style="font-weight:bold">참여자 목록</p>`
+    let userText;
+    users.forEach(i => {
+        if(i==user) userText = i + '(나)</br>'
+        else userText = i+'</br>'
+        divUsersNode.innerHTML += userText
+    });
+    headerNode.appendChild(divUsersNode);
+    
     // Users Button
     let btnNode = document.createElement('button');
-    let btnTextNode = document.createTextNode('참가자');
+    let btnTextNode = document.createTextNode('참여자');
     btnNode.className = 'btnUsers';
-    // btnNode.addEventListener('click', clickUsersBtn);
     btnNode.appendChild(btnTextNode);
-    const headerNode = document.getElementById('header_'+user);
     headerNode.appendChild(btnNode);
-    
-    let divUsersNode = document.getElementById('divUsers_'+user);
     let clickUsersBtn = (function(){
         let isOpen = false;
         return function(){
-            alert();
             isOpen = !isOpen;
             divUsersNode.style.display = isOpen ? 'block' : 'none';
         }
     })();
     btnNode.onclick = clickUsersBtn;
-
+    
     // Send Button
     btnNode = document.createElement('button');
     btnTextNode = document.createTextNode('전송');
@@ -90,10 +111,9 @@ const drawNewRoom = function(user){
 
     const bottomNode = document.getElementById('bottom_'+user);
     bottomNode.appendChild(btnNode);
-    bottomNode.children.inputbox.addEventListener('keyup', function(event) {
-        event.preventDefault();
+    bottomNode.children.inputbox.addEventListener('keypress', function(event) {
         if (event.keyCode === 13) {
-            btnNode.click();
+            clickSendBtn(event);
         }
     });
 }
