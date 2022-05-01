@@ -15,14 +15,13 @@ window.addEventListener('beforeunload', (event) => {
     event.preventDefault();
 
     if(users!==null){
-
         sessionStorage.setItem('users', JSON.stringify(users));
         sessionStorage.setItem('chatRooms', JSON.stringify(chatRooms));
     }
 });
 
-window.addEventListener('DOMContentLoaded',()=>{
-    
+window.addEventListener('DOMContentLoaded',(event)=>{
+
     users = JSON.parse(sessionStorage.getItem('users'));
     chatRooms = JSON.parse(sessionStorage.getItem('chatRooms'));
 

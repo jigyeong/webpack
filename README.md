@@ -17,7 +17,7 @@
 프로젝트 디렉토리에서 패키지를 설치해주세요.
 
 
-### `2. npm run watch`
+### `2. npm run start`
 webpack-dev-server로 프로젝트가 실행됩니다.
 
 [http://localhost:9000/](http://localhost:9000/)에서 확인해주세요.
