@@ -61,13 +61,15 @@ function rePaintData(){
 
 function joinRoom(){
 
-    let user = inputNode.value;
+    let user = inputNode.value.trim();
     if(users.includes(user)){
         alert('이미 존재하는 닉네임 입니다.')
+        inputNode.value='';
         return;
     }
     if(!user){
         alert('닉네임을 입력해주세요.')
+        inputNode.value='';
         return;
     }
 
@@ -178,7 +180,9 @@ const drawNewRoom = function(user){
 function clickSendBtn(e){
     let sendUserId = e.target.parentNode.id.split('_')[1];
     let sendMessageNode = e.target.parentElement.children.inputbox;
-    let message = sendMessageNode.value;
+    let message = sendMessageNode.value.trim();
+
+    if(!message) return;
 
     const messageObj = {
         user : sendUserId,
