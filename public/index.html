@@ -5,27 +5,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Chat</title>
-
 </head>
 <body>
     <div id="app">
         <div class="chatDoor" id="chatDoor">
-            <button style="top:50%; width: 200px; height: 30px; margin-top: 50px;" id="btnJoinRoom">채팅 참가</button>
+            <button class="btnEnter" id="btnJoinRoom">채팅 참가</button>
         </div>
     </div>
-    
     <div class="modal">
         <div class="modal_body">
-            <div style="background-color: yellow; padding: 10px;">
+            <div style="background-color: rgb(242 195 16); padding: 10px;">
                 닉네임 설정
             </div>
             <div style="background-color: lightgray; padding: 10px;">
                 <input id="inputUserName" type="text" placeholder="닉네임을 입력해주세요" style="width: 200px; height: 30px; margin:10px"/>
-                <button id="btnEnter" style="width:200px; height: 30px;">입장</button>
+                <button id="btnEnter" class="btnEnter">입장</button>
             </div>
         </div>
     </div>
-
-    <script src="main.js"></script>
+    <script type="module" src="main.js"></script>
 </body>
 </html>

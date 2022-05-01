@@ -1,9 +1,15 @@
 describe('webchat client test', ()=>{
 
+    before(()=>{
+        cy.window().then((win) => {
+            win.sessionStorage.clear()
+        })
+    })
+
     it('successfully loads', () => {
         cy.visit('/');
-      })
-
+    })
+    
     it("브라우저 동일한 페이지 내에서 두 개 이상 채팅창을 동작시킬 수 있습니다.", ()=>{
         cy.get('#btnJoinRoom').click();
         cy.get('#inputUserName').type('대화상대1');

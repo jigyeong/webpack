@@ -34,10 +34,14 @@
     right: 10px; 
     position:absolute; 
     height: 40px;
+    background-color: rgb(242 195 16);
+    border: 0;
+    outline: 0;
+    border-radius: 5px;
 }
 .chatRoom .divUsers {
     float:right; 
-    background-color: bisque; 
+    background-color: rgb(249 221 112); 
     right:0;position:absolute;
     top:60px; 
     height:300px; 
@@ -57,7 +61,7 @@
 
 .me {
     border-radius: 20px 0px 50px 20px; 
-    background-color:pink; 
+    background-color: rgb(242 195 16); 
     width: 50%; 
     margin-bottom: 10px; 
     padding: 15px; 
@@ -93,4 +97,13 @@
     border-radius: 10px; 
     box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15); 
     transform: translateX(-50%) translateY(-50%); 
+}
+
+.btnEnter {
+    width: 200px; 
+    height: 40px;
+    background-color: rgb(242 195 16);
+    border: 0;
+    outline: 0;
+    border-radius: 5px;
 }
