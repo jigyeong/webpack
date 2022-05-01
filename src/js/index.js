@@ -162,6 +162,7 @@ const drawNewRoom = function(user){
     btnNode = document.createElement('button');
     btnTextNode = document.createTextNode('전송');
     btnNode.appendChild(btnTextNode);
+    btnNode.id='send';
     btnNode.addEventListener('click', clickSendBtn);
 
     const bottomNode = document.getElementById('bottom_'+user);
