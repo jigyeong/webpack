@@ -6,11 +6,34 @@ const btnJoinRoom = document.getElementById("btnJoinRoom");
 const inputNode = document.getElementById('inputUserName');
 const btnEnter = document.getElementById("btnEnter");
 
+let users = [];
+let chatRooms = [];
+
+window.addEventListener('beforeunload', (event) => {
+
+    // 표준에 따라 기본 동작 방지
+    event.preventDefault();
+
+    if(users!==null){
+
+        sessionStorage.setItem('users', JSON.stringify(users));
+        sessionStorage.setItem('chatRooms', JSON.stringify(chatRooms));
+    }
+});
+
 window.addEventListener('DOMContentLoaded',()=>{
-    /*
-     추후 localStorage 에서 data 뽑아옴
-     */
     
+    users = JSON.parse(sessionStorage.getItem('users'));
+    chatRooms = JSON.parse(sessionStorage.getItem('chatRooms'));
+
+    if(users!==null){
+        rePaintData();
+    }
+    else {
+        users = [];
+        chatRooms = [];
+    }
+
     btnJoinRoom.addEventListener('click', function(){
         document.querySelector('.modal').style.display='block';
         inputNode.focus();
@@ -18,22 +41,33 @@ window.addEventListener('DOMContentLoaded',()=>{
     
     btnEnter.addEventListener('click',joinRoom);
     
-    inputNode.addEventListener('keydown', function(event) {
-        if (event.keyCode === 13) {
+    inputNode.addEventListener('keypress', function(event) {
+        let key = event.key || event.keyCode;;
+        if (key === 'Enter' || key === 13) {
             joinRoom();
         }
     });
 });
 
-
-const users = [];
-const chatRooms = [];
+function rePaintData(){
+    // chatRooms를 돌면서 채팅방을 다시 그린다
+    chatRooms.forEach(chatRoom => {
+        drawNewRoom(chatRoom.owner);
+        chatRoom.messages.forEach(message => {
+            drawMessage(chatRoom.owner, message);
+        });
+    });
+}
 
 function joinRoom(){
 
     let user = inputNode.value;
     if(users.includes(user)){
         alert('이미 존재하는 닉네임 입니다.')
+        return;
+    }
+    if(!user){
+        alert('닉네임을 입력해주세요.')
         return;
     }
 
@@ -133,7 +167,8 @@ const drawNewRoom = function(user){
     const bottomNode = document.getElementById('bottom_'+user);
     bottomNode.appendChild(btnNode);
     bottomNode.children.inputbox.addEventListener('keypress', function(event) {
-        if (event.keyCode === 13) {
+        let key = event.key || event.keyCode;;
+        if (key === 'Enter' || key === 13) {
             clickSendBtn(event);
         }
     });
