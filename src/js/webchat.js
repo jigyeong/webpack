@@ -2,16 +2,17 @@
 
 import '../style/style.css'
 
-const btnJoinRoom = document.getElementById("btnJoinRoom");
-const inputNode = document.getElementById('inputUserName');
-const btnEnter = document.getElementById("btnEnter");
+let elements = {};
+let users, chatRooms;
 
-let users = [];
-let chatRooms = [];
+['btnJoinRoom', 'inputUserName', 'btnEnter'].forEach(item => elements = {
+    ...elements,
+    [item]: document.getElementById(item)
+})
+const {btnJoinRoom, inputUserName, btnEnter} = elements;
 
 window.addEventListener('beforeunload', (event) => {
 
-    // 표준에 따라 기본 동작 방지
     event.preventDefault();
 
     if(users!==null){
@@ -21,11 +22,10 @@ window.addEventListener('beforeunload', (event) => {
 });
 
 window.addEventListener('DOMContentLoaded',(event)=>{
-
-    users = JSON.parse(sessionStorage.getItem('users'));
-    chatRooms = JSON.parse(sessionStorage.getItem('chatRooms'));
-
-    if(users!==null){
+    
+    if(sessionStorage.getItem('users')){
+        users = JSON.parse(sessionStorage.getItem('users'));
+        chatRooms = JSON.parse(sessionStorage.getItem('chatRooms'));
         rePaintData();
     }
     else {
@@ -35,12 +35,12 @@ window.addEventListener('DOMContentLoaded',(event)=>{
 
     btnJoinRoom.addEventListener('click', function(){
         document.querySelector('.modal').style.display='block';
-        inputNode.focus();
+        inputUserName.focus();
     });
     
     btnEnter.addEventListener('click',joinRoom);
     
-    inputNode.addEventListener('keypress', function(event) {
+    inputUserName.addEventListener('keypress', function(event) {
         let key = event.key || event.keyCode;;
         if (key === 'Enter' || key === 13) {
             joinRoom();
@@ -49,7 +49,6 @@ window.addEventListener('DOMContentLoaded',(event)=>{
 });
 
 function rePaintData(){
-    // chatRooms를 돌면서 채팅방을 다시 그린다
     chatRooms.forEach(chatRoom => {
         drawNewRoom(chatRoom.owner);
         chatRoom.messages.forEach(message => {
@@ -59,28 +58,32 @@ function rePaintData(){
 }
 
 function joinRoom(){
+    const user = inputUserName.value.trim();
 
-    let user = inputNode.value.trim();
+    if(checkNameValiable(user)){
+        document.querySelector('.modal').style.display='none';
+        inputUserName.value='';
+    
+        users.push(user);
+        openNewRoom(user);
+    }
+}
+
+function checkNameValiable(user){
     if(users.includes(user)){
         alert('이미 존재하는 닉네임 입니다.')
-        inputNode.value='';
-        return;
+        inputUserName.value='';
+        return false;
     }
     if(!user){
         alert('닉네임을 입력해주세요.')
-        inputNode.value='';
-        return;
+        inputUserName.value='';
+        return false;
     }
-
-    document.querySelector('.modal').style.display='none';
-    inputNode.value='';
-
-    users.push(user);
-    openNewRoom(user);
+    return true;
 }
 
-const openNewRoom = function(user){
-
+function openNewRoom(user){
     let chatRoom = new ChatRoomObj(user);
     chatRooms.push(chatRoom);
 
@@ -88,7 +91,7 @@ const openNewRoom = function(user){
     noticeNewUser(user);
 }
 
-const noticeNewUser = function(user){
+function noticeNewUser(user){
     const messageObj = {
         user : user,
         message : 'enter',
@@ -96,23 +99,19 @@ const noticeNewUser = function(user){
     }
     sendMessage(messageObj);
 
-    // update Users Div
     users.forEach(i => {
         if(i!==user) document.getElementById(`divUsers_${i}`).innerHTML += `${user}</br>`
     });
 }
 
-const sendMessage = function(messageObj){
-    // 현재 존재하는 채팅방 foreach
+function sendMessage(messageObj){
     chatRooms.forEach(function(chatRoom) {
-        // 각 채팅방마다 push new message
         chatRoom.messages.push(messageObj);
-        // 각 채팅방마다 drawing new message
         drawMessage(chatRoom.owner, messageObj);
     });
 }
 
-const drawNewRoom = function(user){
+function drawNewRoom(user){
     const rootNode = document.getElementById('app');
     const roomNode = `
         <div class="chatRoom" id="chatRoom_${user}">
@@ -192,7 +191,7 @@ function clickSendBtn(e){
     sendMessageNode.value='';
 }
 
-const drawMessage = function(chatRoomOwner, messageObj){
+function drawMessage(chatRoomOwner, messageObj){
     let chatRoomMessagesId = `messages_${chatRoomOwner}`;
     let chatRoomNode = document.getElementById(chatRoomMessagesId);
     let messageDiv;
