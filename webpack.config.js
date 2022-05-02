@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     mode: 'development',
     entry: {
-        main : './src/js/webchat.js',
+        main : './src/js/index.js',
     },
     output: {
         path : path.resolve('public'),
