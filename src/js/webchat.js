@@ -26,7 +26,7 @@ window.addEventListener('DOMContentLoaded',(event)=>{
     if(sessionStorage.getItem('users')){
         users = JSON.parse(sessionStorage.getItem('users'));
         chatRooms = JSON.parse(sessionStorage.getItem('chatRooms'));
-        rePaintData();
+        rePaintData(chatRooms);
     }
     else {
         users = [];
@@ -40,15 +40,15 @@ window.addEventListener('DOMContentLoaded',(event)=>{
     
     btnEnter.addEventListener('click',joinRoom);
     
-    inputUserName.addEventListener('keypress', function(event) {
-        let key = event.key || event.keyCode;;
+    inputUserName.addEventListener('keypress', function(e) {
+        let key = e.key || e.keyCode;;
         if (key === 'Enter' || key === 13) {
             joinRoom();
         }
     });
 });
 
-function rePaintData(){
+function rePaintData(chatRooms){
     chatRooms.forEach(chatRoom => {
         drawNewRoom(chatRoom.owner);
         chatRoom.messages.forEach(message => {
@@ -84,7 +84,7 @@ function checkNameValiable(user){
 }
 
 function openNewRoom(user){
-    const chatRoom = new ChatRoomObj(user);
+    const chatRoom = new ChatRoom(user);
     chatRooms.push(chatRoom);
 
     drawNewRoom(user);
@@ -223,7 +223,9 @@ function drawMessage(chatRoomOwner, messageObj){
     chatRoomNode.scrollTop = chatRoomNode.scrollHeight;
 }
 
-function ChatRoomObj(user){
-    this.owner = user;
-    this.messages = [];
+class ChatRoom{
+    constructor(user){
+        this.owner = user;
+        this.messages = [];
+    }
 }

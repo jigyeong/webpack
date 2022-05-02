@@ -33,8 +33,8 @@ describe('webchat client test', ()=>{
 
     it("채팅방 1 에서 입력을 하면 다른방(ex.채팅방 2, 채팅방 3)도 같이 업데이트를 해줍니다.", ()=>{
         let message = '안녕하세요!';
-        cy.get('#chatRoom_대화상대1').get('#inputbox').type(message);
-        cy.get('#chatRoom_대화상대1').get('#send').click();
+        cy.get('#chatRoom_대화상대1').find('#inputbox').type(message);
+        cy.get('#chatRoom_대화상대1').find('#send').click();
         cy.get('#app').find('.audience').should($=>{
             $.map((i,el)=>{
                 expect(el.innerHTML).equal(message);
@@ -61,11 +61,15 @@ describe('webchat client test', ()=>{
     });
 
     it("새로 참여한 사용자는 참여한 순간 이후부터 채팅을 보게 됩니다.", ()=>{
+        cy.get('#chatRoom_대화상대4').find('#inputbox').type("Hey!");
+        cy.get('#chatRoom_대화상대4').find('#send').click();
         cy.get('#messages_대화상대4').find('.audience').should('not.exist')
     })
 
     it("채팅내용은 브라우저에 저장되고 리로드하면 동일한 상태로 복구 해줍니다.", ()=>{
         cy.reload();
+        cy.get('#chatRoom_대화상대4').find('#inputbox').type("Reload Success!");
+        cy.get('#chatRoom_대화상대4').find('#send').click();
         cy.get('.chatRoom').should('have.length',4);
     })
 });
