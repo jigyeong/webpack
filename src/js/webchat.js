@@ -63,9 +63,13 @@ function joinRoom(){
     if(checkNameValiable(user)){
         document.querySelector('.modal').style.display='none';
         inputUserName.value='';
-    
+        
         users.push(user);
-        openNewRoom(user);
+        const chatRoom = new ChatRoom(user);
+        chatRooms.push(chatRoom);
+
+        drawNewRoom(user);
+        noticeNewUser(user);
     }
 }
 
@@ -81,14 +85,6 @@ function checkNameValiable(user){
         return false;
     }
     return true;
-}
-
-function openNewRoom(user){
-    const chatRoom = new ChatRoom(user);
-    chatRooms.push(chatRoom);
-
-    drawNewRoom(user);
-    noticeNewUser(user);
 }
 
 function noticeNewUser(user){
@@ -120,7 +116,7 @@ function drawNewRoom(user){
             </div>
             <div id="messages_${user}" class="messageBox">
             </div>
-            <div id="bottom_${user}" class="bottomBox">
+            <div id="footer_${user}" class="footerBox">
                 <input id="inputbox" type="text" placeholder="내용을 입력해주세요" style="width:60%"/>
             </div>
         </div>
@@ -128,17 +124,18 @@ function drawNewRoom(user){
     app.insertAdjacentHTML('beforeend',roomNode);
    
     const headerNode = document.getElementById('header_'+user);
-    const bottomNode = document.getElementById('bottom_'+user);
+    const footerNode = document.getElementById('footer_'+user);
     
     const divAttendees = makeDivAttendees(user);
     const btnUsers = makeUsersButton(divAttendees);
     const btnSend = makeSendButton();
-
+    
     headerNode.appendChild(divAttendees);
     headerNode.appendChild(btnUsers);
-    bottomNode.appendChild(btnSend);
-
-    bottomNode.children.inputbox.addEventListener('keypress', function(e) {
+    footerNode.appendChild(btnSend);
+    
+    btnSend.addEventListener('click', (e)=>clickSendBtn(e));
+    footerNode.children.inputbox.addEventListener('keypress', function(e) {
         let key = e.key || e.keyCode;;
         if (key === 'Enter' || key === 13) {
             clickSendBtn(e);
@@ -184,7 +181,6 @@ function makeSendButton(){
     const btnTextNode = document.createTextNode('전송');
     btnNode.appendChild(btnTextNode);
     btnNode.id='send';
-    btnNode.addEventListener('click', clickSendBtn);
 
     return btnNode;
 }

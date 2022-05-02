@@ -24,7 +24,7 @@
     height: 310px; 
     overflow-y: scroll;
 }
-.chatRoom .bottomBox {
+.chatRoom .footerBox {
     bottom: 10px; 
     position: absolute; 
     width:100%; 
