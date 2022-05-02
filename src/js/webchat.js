@@ -5,11 +5,11 @@ import '../style/style.css'
 let elements = {};
 let users, chatRooms;
 
-['btnJoinRoom', 'inputUserName', 'btnEnter'].forEach(item => elements = {
+['app', 'btnJoinRoom', 'inputUserName', 'btnEnter'].forEach(item => elements = {
     ...elements,
     [item]: document.getElementById(item)
 })
-const {btnJoinRoom, inputUserName, btnEnter} = elements;
+const {app, btnJoinRoom, inputUserName, btnEnter} = elements;
 
 window.addEventListener('beforeunload', (event) => {
 
@@ -100,7 +100,7 @@ function noticeNewUser(user){
     sendMessage(messageObj);
 
     users.forEach(i => {
-        if(i!==user) document.getElementById(`divUsers_${i}`).innerHTML += `${user}</br>`
+        if(i!==user) document.getElementById(`divAttendees_${i}`).innerHTML += `${user}</br>`
     });
 }
 
@@ -112,7 +112,6 @@ function sendMessage(messageObj){
 }
 
 function drawNewRoom(user){
-    const rootNode = document.getElementById('app');
     const roomNode = `
         <div class="chatRoom" id="chatRoom_${user}">
             <div id="header_${user}" style="display: flex;">
@@ -126,53 +125,68 @@ function drawNewRoom(user){
             </div>
         </div>
         `
-    rootNode.insertAdjacentHTML('beforeend',roomNode);
+    app.insertAdjacentHTML('beforeend',roomNode);
    
     const headerNode = document.getElementById('header_'+user);
+    const bottomNode = document.getElementById('bottom_'+user);
     
-    // Users Div
-    const divUsersNode = document.createElement('div');
-    divUsersNode.className = 'divUsers';
-    divUsersNode.id = `divUsers_${user}`;
-    divUsersNode.innerHTML = `<p style="font-weight:bold">참여자 목록</p>`
-    let userText;
-    users.forEach(i => {
-        if(i==user) userText = i + '(나)</br>'
-        else userText = i+'</br>'
-        divUsersNode.innerHTML += userText
+    const divAttendees = makeDivAttendees(user);
+    const btnUsers = makeUsersButton(divAttendees);
+    const btnSend = makeSendButton();
+
+    headerNode.appendChild(divAttendees);
+    headerNode.appendChild(btnUsers);
+    bottomNode.appendChild(btnSend);
+
+    bottomNode.children.inputbox.addEventListener('keypress', function(e) {
+        let key = e.key || e.keyCode;;
+        if (key === 'Enter' || key === 13) {
+            clickSendBtn(e);
+        }
     });
-    headerNode.appendChild(divUsersNode);
-    
-    // Users Button
-    let btnNode = document.createElement('button');
-    let btnTextNode = document.createTextNode('참여자');
+}
+
+function makeDivAttendees(roomOwner){
+    const divAttendees = document.createElement('div');
+    divAttendees.className = 'divAttendees';
+    divAttendees.id = `divAttendees_${roomOwner}`;
+    divAttendees.innerHTML = `<p style="font-weight:bold">참여자 목록</p>`
+    let userText;
+    users.forEach(user => {
+        if(user==roomOwner) userText = user + '(나)</br>'
+        else userText = user+'</br>'
+        divAttendees.innerHTML += userText
+    });
+
+    return divAttendees;
+}
+
+function makeUsersButton(divAttendees){
+    const btnNode = document.createElement('button');
+    const btnTextNode = document.createTextNode('참여자');
     btnNode.className = 'btnUsers';
     btnNode.appendChild(btnTextNode);
-    headerNode.appendChild(btnNode);
+
     let clickUsersBtn = (function(){
         let isOpen = false;
         return function(){
             isOpen = !isOpen;
-            divUsersNode.style.display = isOpen ? 'block' : 'none';
+            divAttendees.style.display = isOpen ? 'block' : 'none';
         }
     })();
     btnNode.onclick = clickUsersBtn;
-    
-    // Send Button
-    btnNode = document.createElement('button');
-    btnTextNode = document.createTextNode('전송');
+
+    return btnNode;
+}
+
+function makeSendButton(){
+    const btnNode = document.createElement('button');
+    const btnTextNode = document.createTextNode('전송');
     btnNode.appendChild(btnTextNode);
     btnNode.id='send';
     btnNode.addEventListener('click', clickSendBtn);
 
-    const bottomNode = document.getElementById('bottom_'+user);
-    bottomNode.appendChild(btnNode);
-    bottomNode.children.inputbox.addEventListener('keypress', function(event) {
-        let key = event.key || event.keyCode;;
-        if (key === 'Enter' || key === 13) {
-            clickSendBtn(event);
-        }
-    });
+    return btnNode;
 }
 
 function clickSendBtn(e){

@@ -39,7 +39,7 @@
     outline: 0;
     border-radius: 5px;
 }
-.chatRoom .divUsers {
+.chatRoom .divAttendees {
     float:right; 
     background-color: rgb(249 221 112); 
     right:0;position:absolute;

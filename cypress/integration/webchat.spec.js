@@ -57,7 +57,7 @@ describe('webchat client test', ()=>{
         cy.get('#btnEnter').click();
         cy.get('#messages_대화상대1').get('.enter').contains(newUser+' 님이 입장하셨습니다.');
         cy.get('#header_대화상대1').find('.btnUsers').click();
-        cy.get('#divUsers_대화상대1').contains(newUser);
+        cy.get('#divAttendees_대화상대1').contains(newUser);
     });
 
     it("새로 참여한 사용자는 참여한 순간 이후부터 채팅을 보게 됩니다.", ()=>{
