@@ -24,16 +24,16 @@ window.addEventListener('DOMContentLoaded',()=>{
     
     if(sessionStorage.getItem('users')){
         users = JSON.parse(sessionStorage.getItem('users'));
-        let jsonParseData = JSON.parse(sessionStorage.getItem('chatRooms'));
+        const jsonParseData = JSON.parse(sessionStorage.getItem('chatRooms'));
 
         let chatRoom;
         jsonParseData.forEach(data=>{
-            chatRoom = new ChatRoom(data.owner, {sendMessage});
-            chatRoom.setMessages(data.messages);
-            chatRoom.drawNewRoom(users);
-            chatRoom.getMessages().forEach(message => {
-                chatRoom.drawMessage(message);
+            chatRoom = new ChatRoom({
+                user:data.owner, 
+                messages:data.messages,
+                callback:{sendMessage},
             });
+            chatRoom.redrawing(users);
             chatRooms.push(chatRoom);
         })
     }
@@ -62,10 +62,11 @@ function joinRoom(){
         inputUserName.value='';
         
         users.push(user);
-        const chatRoom = new ChatRoom(user, {sendMessage});
+
+        const chatRoom = new ChatRoom({user, callback:{sendMessage}});
+        chatRoom.drawNewRoom(users);
         chatRooms.push(chatRoom);
 
-        chatRoom.drawNewRoom(users);
         noticeNewUser(user);
     }
 }
@@ -85,19 +86,20 @@ function checkNameValiable(user){
 }
 
 function noticeNewUser(user){
-    const messageObj = {
-        user : user,
-        message : 'enter',
-        time : new Date().getTime()
-    }
-    sendMessage(messageObj);
+
+    sendMessage({user,message:'enter'});
 
     users.forEach(i => {
         if(i!==user) document.getElementById(`divAttendees_${i}`).innerHTML += `${user}</br>`
     });
 }
 
-const sendMessage = function(messageObj){
+function sendMessage({user, message}){
+    let messageObj = {
+        user,
+        message,
+        time: new Date().getTime()
+    }
     chatRooms.forEach(function(chatRoom) {
         chatRoom.getMessages().push(messageObj);
         chatRoom.drawMessage(messageObj);

@@ -1,7 +1,8 @@
 export default class ChatRoom{
-    constructor(user,callback){
+
+    constructor({user, messages=[], callback={}}){
         this.owner = user;
-        this.messages = [];
+        this.messages = messages;
         this.callback = callback;
     }
 
@@ -112,13 +113,16 @@ export default class ChatRoom{
         const message = sendMessageNode.value.trim();
     
         if(!message) return;
-    
-        const messageObj = {
-            user : sendUserId,
-            message : message,
-            time : new Date().getTime()
-        }
-        this.callback.sendMessage(messageObj);
+
+        this.callback.sendMessage({user : sendUserId, message});
+        
         sendMessageNode.value='';
+    }
+
+    redrawing(users){
+        this.drawNewRoom(users);
+        this.getMessages().forEach(message => {
+            this.drawMessage(message);
+        });
     }
 }

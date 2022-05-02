@@ -2,7 +2,7 @@ var path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     entry: {
         main : './src/js/index.js',
     },
@@ -22,7 +22,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             favicon: './static/asset/favicon.ico',
             template: './static/index.html',
-            // minify: true,
+            minify: true,
             chunks: ['main']
         })
     ],
