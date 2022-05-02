@@ -14,11 +14,8 @@ const {app, btnJoinRoom, inputUserName, btnEnter} = elements;
 window.addEventListener('beforeunload', (event) => {
 
     event.preventDefault();
-
-    if(users!==null){
-        sessionStorage.setItem('users', JSON.stringify(users));
-        sessionStorage.setItem('chatRooms', JSON.stringify(chatRooms));
-    }
+    sessionStorage.setItem('users', JSON.stringify(users));
+    sessionStorage.setItem('chatRooms', JSON.stringify(chatRooms));
 });
 
 window.addEventListener('DOMContentLoaded',(event)=>{
@@ -123,19 +120,18 @@ function drawNewRoom(user){
         `
     app.insertAdjacentHTML('beforeend',roomNode);
    
-    const headerNode = document.getElementById('header_'+user);
-    const footerNode = document.getElementById('footer_'+user);
-    
     const divAttendees = makeDivAttendees(user);
     const btnUsers = makeUsersButton(divAttendees);
     const btnSend = makeSendButton();
+    const headerNode = document.getElementById('header_'+user);
+    const footerNode = document.getElementById('footer_'+user);
     
     headerNode.appendChild(divAttendees);
     headerNode.appendChild(btnUsers);
     footerNode.appendChild(btnSend);
     
-    btnSend.addEventListener('click', (e)=>clickSendBtn(e));
-    footerNode.children.inputbox.addEventListener('keypress', function(e) {
+    btnSend.addEventListener('click', (e) => clickSendBtn(e));
+    footerNode.children.inputbox.addEventListener('keypress', (e) => {
         let key = e.key || e.keyCode;;
         if (key === 'Enter' || key === 13) {
             clickSendBtn(e);
@@ -148,12 +144,7 @@ function makeDivAttendees(roomOwner){
     divAttendees.className = 'divAttendees';
     divAttendees.id = `divAttendees_${roomOwner}`;
     divAttendees.innerHTML = `<p style="font-weight:bold">참여자 목록</p>`
-    let userText;
-    users.forEach(user => {
-        if(user==roomOwner) userText = user + '(나)</br>'
-        else userText = user+'</br>'
-        divAttendees.innerHTML += userText
-    });
+    users.forEach(user => divAttendees.innerHTML += user===roomOwner ? `${user}(나)</br>` : `${user}</br>` );
 
     return divAttendees;
 }
@@ -164,14 +155,13 @@ function makeUsersButton(divAttendees){
     btnNode.className = 'btnUsers';
     btnNode.appendChild(btnTextNode);
 
-    let clickUsersBtn = (function(){
+    btnNode.onclick = (()=>{
         let isOpen = false;
         return function(){
             isOpen = !isOpen;
             divAttendees.style.display = isOpen ? 'block' : 'none';
         }
     })();
-    btnNode.onclick = clickUsersBtn;
 
     return btnNode;
 }
