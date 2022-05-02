@@ -62,8 +62,8 @@ export default class ChatRoom{
         headerNode.appendChild(btnUsers);
         footerNode.appendChild(btnSend);
         
-        btnSend.addEventListener('click', (e) => this.clickSendBtn(e));
-        footerNode.children.inputbox.addEventListener('keypress', (e) => {
+        btnSend.addEventListener('click', e => this.clickSendBtn(e));
+        footerNode.children.inputbox.addEventListener('keypress', e => {
             let key = e.key || e.keyCode;;
             if (key === 'Enter' || key === 13) {
                 this.clickSendBtn(e);
@@ -115,7 +115,7 @@ export default class ChatRoom{
         if(!message) return;
 
         this.callback.sendMessage({user : sendUserId, message});
-        
+
         sendMessageNode.value='';
     }
 

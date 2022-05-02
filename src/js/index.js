@@ -13,9 +13,9 @@ let chatRooms = [];
 })
 const {btnJoinRoom, inputUserName, btnEnter} = elements;
 
-window.addEventListener('beforeunload', (event) => {
+window.addEventListener('beforeunload', e => {
 
-    event.preventDefault();
+    e.preventDefault();
     sessionStorage.setItem('users', JSON.stringify(users));
     sessionStorage.setItem('chatRooms', JSON.stringify(chatRooms));
 });
@@ -87,7 +87,7 @@ function checkNameValiable(user){
 
 function noticeNewUser(user){
 
-    sendMessage({user,message:'enter'});
+    sendMessage({ user, message:'enter' });
 
     users.forEach(i => {
         if(i!==user) document.getElementById(`divAttendees_${i}`).innerHTML += `${user}</br>`
@@ -95,11 +95,7 @@ function noticeNewUser(user){
 }
 
 function sendMessage({user, message}){
-    let messageObj = {
-        user,
-        message,
-        time: new Date().getTime()
-    }
+    let messageObj = { user, message, time: new Date().getTime() }
     chatRooms.forEach(function(chatRoom) {
         chatRoom.getMessages().push(messageObj);
         chatRoom.drawMessage(messageObj);

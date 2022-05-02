@@ -26,18 +26,18 @@ webpack-dev-server로 프로젝트가 실행됩니다.
 ![image](https://user-images.githubusercontent.com/45033386/166148580-f6dc19d6-afd7-471c-a338-b718b9abfc59.png)
 
 ### `3. npm run test`
-`npm run test` 스크립트를 실행하시면 Cypress로 테스트하실 수 있습니다.
+`npm run test` 스크립트를 실행하시면 Cypress 테스트 창이 열립니다.
 
-`webchat.spec.js` 를 클릭하시면 Cypress 를 통해 테스트 진행 상황을 체크하실 수 있습니다.
+`webchat.spec.js` 를 클릭하시면 Cypress 를 통해 프로젝트 End-to-End 테스트를 확인하실 수 있습니다.
 
-테스트 스크립트 실행 시 webpack-dev-server를 실행시키오니, 혹시 webpack-dev-server가 이미 실행되고 있다면 종료 부탁드립니다.
+테스트 스크립트 실행 시 webpack-dev-server를 실행시키오니, 혹시 webpack-dev-server 가 이미 실행되고 있다면 종료 부탁드립니다.
 ![image](https://user-images.githubusercontent.com/45033386/166148340-a4c2fdeb-41ec-4c4b-9f85-6399bf04d315.png)
 ![image](https://user-images.githubusercontent.com/45033386/166148458-9a4fdaed-40a9-4db8-b3fb-db36965bb628.png)
 
 
 
-### `4. npm run test:coverage`
-`npm run test:coverage` 스크립트를 실행하시면 터미널에서 테스트 커버리지를 확인하실 수 있습니다.
+### `4. npm run test:terminal`
+`npm run test:terminal` 스크립트를 실행하시면 터미널에서 테스트 현황을 확인하실 수 있습니다.
 
 테스트 스크립트 실행 시 webpack-dev-server를 실행시키오니, 혹시 webpack-dev-server가 이미 실행되고 있다면 종료 부탁드립니다.
 
