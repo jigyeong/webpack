@@ -84,7 +84,7 @@ function checkNameValiable(user){
 }
 
 function openNewRoom(user){
-    let chatRoom = new ChatRoomObj(user);
+    const chatRoom = new ChatRoomObj(user);
     chatRooms.push(chatRoom);
 
     drawNewRoom(user);
@@ -131,7 +131,7 @@ function drawNewRoom(user){
     const headerNode = document.getElementById('header_'+user);
     
     // Users Div
-    let divUsersNode = document.createElement('div');
+    const divUsersNode = document.createElement('div');
     divUsersNode.className = 'divUsers';
     divUsersNode.id = `divUsers_${user}`;
     divUsersNode.innerHTML = `<p style="font-weight:bold">참여자 목록</p>`
@@ -176,9 +176,9 @@ function drawNewRoom(user){
 }
 
 function clickSendBtn(e){
-    let sendUserId = e.target.parentNode.id.split('_')[1];
-    let sendMessageNode = e.target.parentElement.children.inputbox;
-    let message = sendMessageNode.value.trim();
+    const sendUserId = e.target.parentNode.id.split('_')[1];
+    const sendMessageNode = e.target.parentElement.children.inputbox;
+    const message = sendMessageNode.value.trim();
 
     if(!message) return;
 
@@ -192,8 +192,8 @@ function clickSendBtn(e){
 }
 
 function drawMessage(chatRoomOwner, messageObj){
-    let chatRoomMessagesId = `messages_${chatRoomOwner}`;
-    let chatRoomNode = document.getElementById(chatRoomMessagesId);
+    const chatRoomMessagesId = `messages_${chatRoomOwner}`;
+    const chatRoomNode = document.getElementById(chatRoomMessagesId);
     let messageDiv;
 
     if(messageObj.message=='enter') {
