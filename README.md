@@ -6,11 +6,6 @@
 ![image](https://img.shields.io/badge/Made%20for-VSCode-3260a8.svg?style=appveyor)
 
 
-> 2022 Kakao Front-End 면접 과제 
-> 
-> 지원자 : 백지경 \
-> 과제 제출 ID : A22426154135 
-
 ## Available Scripts
 
 ### `1. npm install`
