@@ -1,7 +1,7 @@
 {
   "name": "webchat",
   "version": "1.0.0",
-  "description": "2022 Kakao Front-End Interview Assignment",
+  "description": "Learn Webpack & Cypress",
   "main": "index.js",
   "scripts": {
     "build": "webpack",
